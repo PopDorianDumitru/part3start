@@ -6,7 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "logs:prod": "heroku logs --tail",
+    "deploy": "git push heroku main",
+    "build:ui": "rm -rf build && cd ../recapitulare/recap2/ && npm run build && cp -r build ../../part3Start"
   },
   "repository": {
     "type": "git",
