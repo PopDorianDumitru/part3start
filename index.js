@@ -2,6 +2,18 @@ const http = require('http');
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+dotenv.config();
+
+const {REACT_APP_DATABASE_PASSWORD} = process.env; 
+const {REACT_APP_DATABASE_NAME} = process.env;
+
+
+const Note = require("./models/note");
+
+
+
 app.use(express.json())
 app.use(cors());
 app.use(express.static('build'));
@@ -33,7 +45,11 @@ app.get('/', (request, response) =>{
 })
 
 app.get('/api/notes', (request, response) =>{
-  response.json(notes);
+  
+  Note.find({})
+  .then(notes=> {
+    response.json(notes);
+  });
 })
 
 app.get('/api/notes/:id', (request, response)=>{
