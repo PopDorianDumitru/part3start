@@ -1,34 +1,90 @@
 {
-  "jest": {
-    "testEnvironment": "node"
-  },
+  
   "name": "part3start",
+  
   "version": "0.0.0",
+  
   "private": true,
+  
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "build:ui": "rm -rf build && cd ../recapitulare/recap2 && npm run build && cp -r build ../../part3Start",
-    "deploy": "git push heroku master",
-    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
-    "logs:prod": "heroku logs --tail",
-    "lint": "eslint .",
-    "test": "jest --verbose"
+  
+    
+  "start": "node index.js",
+  
+    
+  "dev": "nodemon index.js",
+  
+    
+  "build:ui": "rm -rf build && cd ../recapitulare/recap2 && npm run build && cp -r build ../../part3Start",
+  
+    
+  "deploy": "git push heroku master",
+  
+    
+  "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push && npm run deploy",
+  
+    
+  "logs:prod": "heroku logs --tail",
+  
+    
+  "lint": "eslint .",
+  
+    
+  "test": "jest --verbose"
+  
   },
+  
   "dependencies": {
-    "cookie-parser": "~1.4.4",
-    "cors": "^2.8.5",
-    "debug": "~2.6.9",
-    "dotenv": "^16.0.1",
-    "express": "~4.16.1",
-    "heroku": "^7.60.2",
-    "http-errors": "~1.6.3",
-    "jade": "^1.9.2",
-    "mongoose": "^6.4.4",
-    "morgan": "~1.9.1"
+  
+    
+  "cookie-parser": "~1.4.4",
+  
+    
+  "cors": "^2.8.5",
+  
+    
+  "debug": "~2.6.9",
+  
+    
+  "dotenv": "^16.0.1",
+  
+    
+  "express": "~4.16.1",
+  
+    
+  "heroku": "^7.60.2",
+  
+    
+  "http-errors": "~1.6.3",
+  
+    
+  "jade": "^1.9.2",
+  
+    
+  "mongoose": "^6.4.4",
+  
+    
+  "morgan": "~1.9.1"
+  
   },
+  
   "devDependencies": {
-    "jest": "^28.1.2",
-    "nodemon": "^2.0.19"
+  
+    
+  "eslint": "^8.19.0",
+  
+    
+  "jest": "^28.1.2",
+  
+    
+  "nodemon": "^2.0.19"
+  
+  },
+  
+  "jest": {
+  
+    
+  "testEnvironment": "node"
+  
   }
 }
