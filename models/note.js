@@ -11,8 +11,15 @@ mongoose.connect(url)
     .catch(err=>console.log("Error connecting to MongoDB: ", err.message));
 
 const noteSchema = new mongoose.Schema({
-    content: String,
-    date: Date,
+    content:{ 
+        type:String,
+        required: true,
+        minLength: 5
+    },
+    date:{
+        type: Date,
+        required: true
+    },
     important: Boolean
 })
 
