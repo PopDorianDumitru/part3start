@@ -1,14 +1,10 @@
 const mongoose = require('mongoose');
 const path = require('path');
-const dotenv = require('dotenv');
-dotenv.config({path: path.resolve(__dirname, '../.env')});
-const url = process.env.MONGODB_URI;
+const config = require('../utils/config');
+const url = config.MONGODB_URI;
 
-console.log("Connecting to ", url);
-
-mongoose.connect(url)
-    .then(result=>console.log("Connected to MongoDB"))
-    .catch(err=>console.log("Error connecting to MongoDB: ", err.message));
+mongoose.connect(url);
+    
 
 const noteSchema = new mongoose.Schema({
     content:{ 
@@ -20,7 +16,11 @@ const noteSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    important: Boolean
+    important: Boolean,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
 })
 
 noteSchema.set('toJSON', {

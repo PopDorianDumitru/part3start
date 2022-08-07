@@ -1,56 +1,61 @@
 const notesRouter = require('express').Router();
 const Note = require('../models/note');
-  
-notesRouter.get('/', (request, response, next) =>{
+const User = require('../models/user');
+const jwt = require('jsonwebtoken');
+
+const getTokenFrom = request =>{
+  const authorization = request.get('authorization');
+  if(authorization && authorization.toLowerCase().startsWith('bearer'))
+    return authorization.substring(7);
+  return null;
+}
+
+notesRouter.get('/', async (request, response, next) =>{
     
-    Note.find({})
-    .then(notes=> {
-      response.json(notes);
-    })
-    .catch(err => next(err));
+    const notes = await Note.find({}).populate('user',{username:1, name: 1});
+    response.json(notes);
 })
   
-notesRouter.get('/:id', (request, response, next)=>{
-    Note.findById(request.params.id)
-    .then(note=> {
-      if(note)
-        response.json(note);
-      else
-        response.status(404).end();
-    })
-    .catch(err => next(err))
+notesRouter.get('/:id', async(request, response, next)=>{
+  
+    const note = await Note.findById(request.params.id);
+    if(note)
+      response.json(note);
+    else
+      response.status(400).end();
 })
   
-notesRouter.delete('/:id', (request, response, next) =>{
-    Note.findByIdAndDelete(request.params.id)
-    .then(result =>{
+notesRouter.delete('/:id', async(request, response, next) =>{
+
+      await Note.findByIdAndRemove(request.params.id);
       response.status(204).end();
-    })
-    .catch(err=>next(err));
+   
   
 })
   
-notesRouter.post('/', (request, response, next) =>{
+notesRouter.post('/', async(request, response, next) =>{
     const body = request.body;
-  
-    if(!body.content)
-      return response.status(400).json({
-        error: "content missing"
-      })
-  
-      
+    const token = getTokenFrom(request);
+    const decodedToken = jwt.verify(token, process.env.SECRET);
+    if(!decodedToken.id){
+      return response.status(401).json({error: 'token missing or invalid'});
+    }
+    const user = await User.findById(decodedToken.id);
+
     const note = new Note({
       content: body.content,
       important: body.important || false,
-      date: new Date()
+      date: new Date(),
+      user: user._id
     })
     
+    
+      const savedNote = await note.save();
+      response.status(201).json(savedNote);
+      user.notes = user.notes.concat(savedNote._id);
+      await user.save();
   
-    note.save().then(savedNote=>{
-      response.json(savedNote);
-      console.log("IT SAVED");
-    })
-    .catch(err => next(err))
+    
   
 })
   
